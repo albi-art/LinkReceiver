@@ -1,0 +1,7 @@
+/*
+ * Copyright (c) 2021.
+ * https://github.com/albi-art
+ */
+
+include ':app'
+rootProject.name = "LinkReceiver"
