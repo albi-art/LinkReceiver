@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -75,14 +74,16 @@ public class FullscreenActivity extends AppCompatActivity {
      * in the center of the tap
      */
     @SuppressLint("SetTextI18n")
-    @RequiresApi(api = Build.VERSION_CODES.N)
     protected void showDeviceIP() {
+        TextView textView = findViewById(R.id.fullscreen_content);
+        String ipAddress = "";
         try {
-            String ipAddress = Server.getFirstInterfaceIPv4();
-            TextView textView = findViewById(R.id.fullscreen_content);
-            textView.setText("Receiver IP Address: " + ipAddress);
+            ipAddress = Server.getFirstInterfaceIPv4();
         } catch (Exception exception) {
-            Log.println(Log.DEBUG, "renderIP", exception.getMessage());
+            ipAddress = "unknown";
+            System.out.println(exception.getMessage());
+        } finally {
+            textView.setText("Receiver IP Address: " + ipAddress);
         }
     }
 

@@ -44,7 +44,6 @@ public class Server extends Thread {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public static String getFirstInterfaceIPv4() {
         try {
             return getIPv4AddressList().get(0);
@@ -54,19 +53,38 @@ public class Server extends Thread {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private static ArrayList<String> getIPv4AddressList() throws SocketException {
+        ArrayList<NetworkInterface> interfaces = Collections
+                .list(NetworkInterface.getNetworkInterfaces());
+
+        return collectIpList(interfaces);
+    }
+
+    private static ArrayList<String> collectIpList(ArrayList<NetworkInterface> interfaces) {
         final String LOOP_IP_REGEXP = "(127.0.0.1)|(0.0.0.0)";
         final String IP_V6_REGEXP = "(.*::.*)";
         final String FILTER_REGEXP = LOOP_IP_REGEXP + "|" + IP_V6_REGEXP;
 
-        ArrayList<NetworkInterface> interfaces = Collections
-                .list(NetworkInterface.getNetworkInterfaces());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return (ArrayList<String>) interfaces.stream()
+                    .flatMap(i -> Collections.list(i.getInetAddresses()).stream()
+                            .map(InetAddress::getHostAddress))
+                    .filter(ip -> !ip.matches(FILTER_REGEXP))
+                    .collect(Collectors.toList());
+        }
 
-        return (ArrayList<String>) interfaces.stream()
-                .flatMap(i -> Collections.list(i.getInetAddresses()).stream()
-                        .map(InetAddress::getHostAddress))
-                .filter(ip -> !ip.matches(FILTER_REGEXP))
-                .collect(Collectors.toList());
+        ArrayList<String> ipList = new ArrayList<>();
+        for (NetworkInterface networkInterface : interfaces) {
+            ArrayList<InetAddress> addressList = Collections
+                    .list(networkInterface.getInetAddresses());
+            for (InetAddress inetAddress : addressList) {
+                String ip = inetAddress.getHostAddress();
+                if (ip.matches(FILTER_REGEXP)) continue;
+
+                ipList.add(inetAddress.getHostAddress());
+            }
+        }
+
+        return ipList;
     }
 }
