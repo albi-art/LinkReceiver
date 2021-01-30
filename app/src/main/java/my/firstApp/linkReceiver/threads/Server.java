@@ -46,14 +46,12 @@ public class Server extends Thread {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static String getFirstInterfaceIPv4() {
-        ArrayList<String> ipAddressList;
         try {
-            ipAddressList = getIPv4AddressList();
+            return getIPv4AddressList().get(0);
         } catch (SocketException e) {
             e.printStackTrace();
-            ipAddressList = (ArrayList<String>) Collections.singletonList("0.0.0.0");
+            return "0.0.0.0";
         }
-        return ipAddressList.get(0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
