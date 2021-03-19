@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2021.
+  ~ https://github.com/albi-art
+  -->
+
+<resources>
+    <color name="colorPrimary">#FF018786</color>
+    <color name="colorPrimaryDark">#FF018786</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="black_overlay">#66000000</color>
+</resources>
