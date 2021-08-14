@@ -10,7 +10,7 @@ This app work on transport layer port 42000. You can download the apk file to tr
 
 #### Changelog
     # v1.1.0
-      • supported new mode of opening Youtube links (links can be opened in the video player, like VLS)
+      • supported new mode of opening Youtube links (links can be opened in the video player, like VLC)
       • supported switcher of Youtube links handler mode
       
     # v1.0.0
