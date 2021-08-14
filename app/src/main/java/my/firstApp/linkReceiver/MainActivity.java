@@ -7,12 +7,16 @@ package my.firstApp.linkReceiver;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+
+import java.util.HashSet;
 
 import my.firstApp.linkReceiver.handlers.MessageHandler;
 import my.firstApp.linkReceiver.threads.Server;
@@ -32,6 +36,15 @@ public class MainActivity extends FullscreenActivity {
     }
 
     /**
+     * Save Youtube_URI_unique_handler_switch status on click
+     */
+    public void onYoutubeSwitchClick(View v) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(YOUTUBE_UNIQUE_HANDLER_ENABLE, mYoutubeUniqueHandlerSwitch.isChecked());
+        editor.apply();
+    }
+
+    /**
      * Class for handle messages from Sockets over MessageBroker
      */
     class UrlHandler implements MessageHandler {
@@ -45,8 +58,37 @@ public class MainActivity extends FullscreenActivity {
         }
 
         protected void openURI(Uri uri) {
+            if (mYoutubeUniqueHandlerSwitch.isChecked()
+                    && isYoutubeHost(uri.getHost())) {
+                shareStreamURI(uri);
+                return;
+            }
+            viewURI(uri);
+        }
+
+        private void shareStreamURI(Uri uri) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.setType("text/plain");
+            sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            startActivity(sendIntent);
+        }
+
+        private void viewURI(Uri uri) {
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
+        }
+
+        private boolean isYoutubeHost(String host) {
+            /*
+             *  Hosts list from Youtube Android app settings
+             */
+            return new HashSet<String>() {{
+                add("youtu.be");
+                add("m.youtube.com");
+                add("youtube.com");
+                add("www.youtube.com");
+            }}.contains(host.toLowerCase());
         }
     }
 
