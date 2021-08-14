@@ -6,9 +6,11 @@
 package my.firstApp.linkReceiver;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Switch;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
  * status bar and navigation/system bar) with user interaction.
  */
 abstract public class FullscreenActivity extends AppCompatActivity {
+    protected SharedPreferences preferences;
+    final String YOUTUBE_UNIQUE_HANDLER_ENABLE = "youtubeUniqueHandlerEnable";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +32,14 @@ abstract public class FullscreenActivity extends AppCompatActivity {
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
+        mYoutubeUniqueHandlerSwitch = findViewById(R.id.youtube_switch);
+        preferences = getPreferences(MODE_PRIVATE);
+
+        /*
+         * Restore Youtube_URI_unique_handler_switch status from preferences
+         */
+        mYoutubeUniqueHandlerSwitch.setChecked(
+                preferences.getBoolean(YOUTUBE_UNIQUE_HANDLER_ENABLE, false));
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(view -> toggle());
@@ -70,6 +83,7 @@ abstract public class FullscreenActivity extends AppCompatActivity {
     };
     private boolean mVisible;
     private final Runnable mHideRunnable = this::hide;
+    protected Switch mYoutubeUniqueHandlerSwitch;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
