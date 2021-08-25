@@ -19,6 +19,8 @@ import androidx.annotation.RequiresApi;
 import java.util.HashSet;
 
 import my.firstApp.linkReceiver.handlers.MessageHandler;
+import my.firstApp.linkReceiver.services.LinkToolsService;
+import my.firstApp.linkReceiver.services.YoutubeToolsService;
 import my.firstApp.linkReceiver.threads.Server;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -48,6 +50,8 @@ public class MainActivity extends FullscreenActivity {
      * Class for handle messages from Sockets over MessageBroker
      */
     class UrlHandler implements MessageHandler {
+        private final LinkToolsService youtubeToolsService = new YoutubeToolsService();
+
         public void handle(String url) {
             try {
                 Uri uri = Uri.parse(url);
@@ -60,7 +64,7 @@ public class MainActivity extends FullscreenActivity {
         protected void openURI(Uri uri) {
             if (mYoutubeUniqueHandlerSwitch.isChecked()
                     && isYoutubeHost(uri.getHost())) {
-                shareStreamURI(uri);
+                shareStreamURI(youtubeToolsService.tryGetDirectURI(uri));
                 return;
             }
             viewURI(uri);
