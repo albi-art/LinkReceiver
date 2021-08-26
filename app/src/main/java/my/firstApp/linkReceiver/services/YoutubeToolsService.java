@@ -40,7 +40,8 @@ public class YoutubeToolsService implements LinkToolsService {
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
                 JSONObject jsonRoot = new JSONObject(responseBody);
-                String streamUrlRaw = jsonRoot.get("stream_url").toString();
+                String streamUrlRaw = LINK_SHARE_TOOLS_API_URI
+                        + jsonRoot.get("stream_hls_url").toString();
                 return Uri.parse(streamUrlRaw);
             }
         } catch (IOException | JSONException e) {
