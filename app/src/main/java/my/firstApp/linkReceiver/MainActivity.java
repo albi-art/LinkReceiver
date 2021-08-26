@@ -101,7 +101,7 @@ public class MainActivity extends FullscreenActivity {
             ipAddress = "unknown";
             System.out.println(exception.getMessage());
         } finally {
-            textView.setText("Receiver IP Address: " + ipAddress);
+            textView.setText("Receiver IP address: " + ipAddress);
         }
     }
 }
