@@ -64,18 +64,10 @@ public class MainActivity extends FullscreenActivity {
         protected void openURI(Uri uri) {
             if (mYoutubeUniqueHandlerSwitch.isChecked()
                     && isYoutubeHost(uri.getHost())) {
-                shareStreamURI(youtubeToolsService.tryGetDirectURI(uri));
+                viewURI(youtubeToolsService.tryGetDirectURI(uri));
                 return;
             }
             viewURI(uri);
-        }
-
-        private void shareStreamURI(Uri uri) {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.setType("text/plain");
-            sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
-            startActivity(sendIntent);
         }
 
         private void viewURI(Uri uri) {
