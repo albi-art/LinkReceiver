@@ -62,12 +62,10 @@ public class MainActivity extends FullscreenActivity {
         }
 
         protected void openURI(Uri uri) {
-            if (mYoutubeUniqueHandlerSwitch.isChecked()
-                    && isYoutubeHost(uri.getHost())) {
-                viewURI(youtubeToolsService.tryGetDirectURI(uri));
-                return;
-            }
-            viewURI(uri);
+            viewURI(mYoutubeUniqueHandlerSwitch.isChecked()
+                    && isYoutubeHost(uri.getHost())
+                    ? youtubeToolsService.tryGetDirectURI(uri)
+                    : uri);
         }
 
         private void viewURI(Uri uri) {
