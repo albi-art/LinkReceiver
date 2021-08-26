@@ -3,12 +3,17 @@ A simple lightweight Android app to automatically open links through the default
 
 This app work on transport layer port 42000. You can download the apk file to try this application on your gadgets (TV or tablet or even on a second smartphone)
 
-[Download demo apk file](https://github.com/albi-art/LinkReceiver/raw/dev/demo/LinkReceiver.apk) [1.49 MB, LinkReceiver.apk]
+[Download demo apk file](https://github.com/albi-art/LinkReceiver/raw/dev/demo/LinkReceiver.apk) [2.00 MB, LinkReceiver.apk]
 #### Checksums
-    sha-256: fafeecfffbd87a014216be59fbe464cc94d225115173ec932fabf9a61f70c6af
-    md5-sum: 7ddeb9a246129718197fe8b78e9e3986
+    sha-256: 41bc712d200080c7762413b35ebf2add98609ff7fc1fcdafb2338a739d43702f
+    md5-sum: b595c750eb01edf7acce006fba549e57
 
 #### Changelog
+    # v1.2.0
+      • upgraded new mode of opening Youtube links (using LinkShareToolsAPI)
+      • supported simple progress bar
+      • edit text
+
     # v1.1.0
       • supported new mode of opening Youtube links (links can be opened in the video player, like VLC)
       • supported switcher of Youtube links handler mode

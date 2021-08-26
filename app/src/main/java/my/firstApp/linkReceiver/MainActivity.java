@@ -19,6 +19,8 @@ import androidx.annotation.RequiresApi;
 import java.util.HashSet;
 
 import my.firstApp.linkReceiver.handlers.MessageHandler;
+import my.firstApp.linkReceiver.services.LinkToolsService;
+import my.firstApp.linkReceiver.services.YoutubeToolsService;
 import my.firstApp.linkReceiver.threads.Server;
 
 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -48,6 +50,8 @@ public class MainActivity extends FullscreenActivity {
      * Class for handle messages from Sockets over MessageBroker
      */
     class UrlHandler implements MessageHandler {
+        private final LinkToolsService youtubeToolsService = new YoutubeToolsService();
+
         public void handle(String url) {
             try {
                 Uri uri = Uri.parse(url);
@@ -58,20 +62,12 @@ public class MainActivity extends FullscreenActivity {
         }
 
         protected void openURI(Uri uri) {
-            if (mYoutubeUniqueHandlerSwitch.isChecked()
-                    && isYoutubeHost(uri.getHost())) {
-                shareStreamURI(uri);
-                return;
-            }
-            viewURI(uri);
-        }
-
-        private void shareStreamURI(Uri uri) {
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.setType("text/plain");
-            sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
-            startActivity(sendIntent);
+            progressBar.postDelayed(() -> progressBar.setVisibility(View.VISIBLE), 200);
+            viewURI(mYoutubeUniqueHandlerSwitch.isChecked()
+                    && isYoutubeHost(uri.getHost())
+                    ? youtubeToolsService.tryGetDirectURI(uri)
+                    : uri);
+            progressBar.postDelayed(() -> progressBar.setVisibility(View.INVISIBLE), 3000);
         }
 
         private void viewURI(Uri uri) {
@@ -107,7 +103,7 @@ public class MainActivity extends FullscreenActivity {
             ipAddress = "unknown";
             System.out.println(exception.getMessage());
         } finally {
-            textView.setText("Receiver IP Address: " + ipAddress);
+            textView.setText("Receiver IP address: " + ipAddress);
         }
     }
 }
