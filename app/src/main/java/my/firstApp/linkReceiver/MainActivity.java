@@ -62,10 +62,12 @@ public class MainActivity extends FullscreenActivity {
         }
 
         protected void openURI(Uri uri) {
+            progressBar.postDelayed(() -> progressBar.setVisibility(View.VISIBLE), 200);
             viewURI(mYoutubeUniqueHandlerSwitch.isChecked()
                     && isYoutubeHost(uri.getHost())
                     ? youtubeToolsService.tryGetDirectURI(uri)
                     : uri);
+            progressBar.postDelayed(() -> progressBar.setVisibility(View.INVISIBLE), 3000);
         }
 
         private void viewURI(Uri uri) {

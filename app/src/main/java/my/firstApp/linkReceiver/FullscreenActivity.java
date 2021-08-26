@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 
 import androidx.appcompat.app.ActionBar;
@@ -33,6 +34,7 @@ abstract public class FullscreenActivity extends AppCompatActivity {
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
         mYoutubeUniqueHandlerSwitch = findViewById(R.id.youtube_switch);
+        progressBar = findViewById(R.id.progressBar);
         preferences = getPreferences(MODE_PRIVATE);
 
         /*
@@ -84,6 +86,7 @@ abstract public class FullscreenActivity extends AppCompatActivity {
     private boolean mVisible;
     private final Runnable mHideRunnable = this::hide;
     protected Switch mYoutubeUniqueHandlerSwitch;
+    protected ProgressBar progressBar;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
